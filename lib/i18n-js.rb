@@ -123,7 +123,7 @@ module SimplesIdeias
       File.open(file, "w+") do |f|
         f << %(var I18n = I18n || {};\n)
         f << %(I18n.translations = );
-        f << translations.to_json
+        f << deep_sort(translations).to_json
         f << %(;)
       end
     end
@@ -171,6 +171,21 @@ module SimplesIdeias
 
     def deep_merge!(target, hash) # :nodoc:
       target.merge!(hash, &MERGER)
+    end
+
+    def deep_sort(hash)
+      case hash
+        when Hash
+          result = Hash[hash.sort]
+          result.each do |key, value|
+            result[key] = deep_sort(value)
+          end
+          result
+        when Array
+          hash.map { |value| deep_sort(value) }
+        else
+          hash
+      end
     end
   end
 end
