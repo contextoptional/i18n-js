@@ -176,7 +176,7 @@ module SimplesIdeias
     def deep_sort(hash)
       case hash
         when Hash
-          result = Hash[hash.sort]
+          result = Hash[hash.sort { |a, b| a[0].to_s <=> b[0].to_s } ]
           result.each do |key, value|
             result[key] = deep_sort(value)
           end
