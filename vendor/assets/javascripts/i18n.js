@@ -112,12 +112,12 @@ I18n.lookup = function(scope, options) {
 
   scope = scope.split(this.defaultSeparator);
 
-  while (messages && scope.length > 0) {
+  while (messages !== undefined && scope.length > 0) {
     currentScope = scope.shift();
     messages = messages[currentScope];
   }
 
-  if (!messages) {
+  if (messages === undefined) {
     if (I18n.fallbacks) {
       var fallbacks = this.getFallbacks(locale);
       for (var fallback = 0; fallback < fallbacks.length; fallbacks++) {
@@ -128,7 +128,7 @@ I18n.lookup = function(scope, options) {
       }
     }
 
-    if (!messages && this.isValidNode(options, "defaultValue")) {
+    if (messages === undefined && this.isValidNode(options, "defaultValue")) {
         messages = options.defaultValue;
     }
   }
@@ -198,7 +198,7 @@ I18n.translate = function(scope, options) {
   var translation = this.lookup(scope, options);
 
   try {
-    if (typeof(translation) == "object") {
+    if (typeof(translation) == "object" || typeof(translation) == "number" || typeof(translation) == "boolean") {
       if (typeof(options.count) == "number") {
         return this.pluralize(options.count, scope, options);
       } else {
