@@ -356,6 +356,68 @@ I18n.strftime = function(date, format) {
   return f;
 };
 
+// Converts Ruby date and time format specifiers to jquery datepicker and timepicker formats
+// Ruby:       http://www.ruby-doc.org/core-1.9.3/Time.html#method-i-strftime
+// Datepicker: http://docs.jquery.com/UI/Datepicker/formatDate
+// Timepicker: http://trentrichardson.com/examples/timepicker/
+I18n.rbToJsDateFormat = function(scope, options) {
+  var f = this.lookup(scope, options);
+
+  if(f == null) {
+    return "";
+  }
+
+  /* Date and Time Formats */
+  f = f.replace(/%[\^]?a/, "D");
+  f = f.replace(/%[\^]?A/, "DD");
+  f = f.replace(/%[\^]?b/, "M");
+  f = f.replace(/%[\^]?B/, "MM");
+  f = f.replace("%d", "dd");
+  f = f.replace("%-d", "d");
+  f = f.replace("%e", "d");
+  f = f.replace("%H", "HH");
+  f = f.replace("%-H", "H");
+  f = f.replace("%k", "H");
+  f = f.replace("%I", "hh");
+  f = f.replace("%-I", "h");
+  f = f.replace("%L", "l");
+  f = f.replace("%l", "h");
+  f = f.replace("%m", "mm");
+  f = f.replace("%-m", "m");
+  f = f.replace("%M", "mm");
+  f = f.replace("%-M", "m");
+  f = f.replace("%N", "");   // Not supported
+  f = f.replace("%p", "TT");
+  f = f.replace("%P", "tt");
+  f = f.replace("%S", "ss");
+  f = f.replace("%-S", "s");
+  f = f.replace("%u", "");   // Not supported
+  f = f.replace("%w", "");   // Not supported
+  f = f.replace("%s", "");   // Not supported
+  f = f.replace("%y", "y");
+  f = f.replace("%-y", "y");
+  f = f.replace("%Y", "yy");
+  f = f.replace(/%(:{0,2}z|Z)/, "z");
+
+  /* Combinations */
+  f = f.replace("%c", "D M d HH:mm:ss yy");
+  f = f.replace("%D", "mm:dd:yy");
+  f = f.replace("%F", "yy-mm-dd");
+  f = f.replace("%v", "d-M-yy");
+  f = f.replace("%x", "mm:dd:yy");
+  f = f.replace("%X", "HH:mm:ss");
+  f = f.replace("%r", "hh:mm:ss TT");
+  f = f.replace("%R", "HH:mm");
+  f = f.replace("%T", "HH:mm:ss");
+
+  /* Literal Strings */
+  f = f.replace("%n", "\n");
+  f = f.replace("%t", "\t");
+  f = f.replace("%%", "%");
+
+  return f;
+}
+
 I18n.toNumber = function(number, options) {
   options = this.prepareOptions(
     options,
