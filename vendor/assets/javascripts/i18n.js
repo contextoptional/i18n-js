@@ -418,6 +418,67 @@ I18n.rbToJsDateFormat = function(scope, options) {
   return f;
 }
 
+// Converts Ruby date and time format specifiers to Moment format
+// Ruby:   http://www.ruby-doc.org/core-1.9.3/Time.html#method-i-strftime
+// Moment: http://momentjs.com/docs/#/displaying/format/
+I18n.rbToMomentDateFormat = function(scope, options) {
+  var f = this.lookup(scope, options);
+
+  if (f === null) {
+    return "";
+  }
+
+  /* Date and Time Formats */
+  f = f.replace(/%[\^]?a/, "ddd");
+  f = f.replace(/%[\^]?A/, "dddd");
+  f = f.replace(/%[\^]?b/, "MMM");
+  f = f.replace(/%[\^]?B/, "MMMM");
+  f = f.replace("%d", "DD");
+  f = f.replace("%-d", "D");
+  f = f.replace("%e", "D");
+  f = f.replace("%H", "HH");
+  f = f.replace("%-H", "H");
+  f = f.replace("%k", "H");
+  f = f.replace("%I", "hh");
+  f = f.replace("%-I", "h");
+  f = f.replace("%L", "SSS");
+  f = f.replace("%l", "h");
+  f = f.replace("%m", "MM");
+  f = f.replace("%-m", "M");
+  f = f.replace("%M", "mm");
+  f = f.replace("%-M", "m");
+  f = f.replace("%N", "");   // Not supported
+  f = f.replace("%p", "A");
+  f = f.replace("%P", "a");
+  f = f.replace("%S", "ss");
+  f = f.replace("%-S", "s");
+  f = f.replace("%u", "");   // Not supported
+  f = f.replace("%w", "d");
+  f = f.replace("%s", "X");
+  f = f.replace("%y", "YY");
+  f = f.replace("%-y", "YY");
+  f = f.replace("%Y", "YYYY");
+  f = f.replace(/%(:{0,2}z|Z)/, "ZZ");
+
+  /* Combinations */
+  f = f.replace("%c", "ddd MMM D HH:mm:ss YYYY");
+  f = f.replace("%D", "MM/DD/YY");
+  f = f.replace("%F", "YY-MM-DD");
+  f = f.replace("%v", "D-MMM-YYYY");
+  f = f.replace("%x", "MM/DD/YY");
+  f = f.replace("%X", "HH:mm:ss");
+  f = f.replace("%r", "hh:mm:ss A");
+  f = f.replace("%R", "HH:mm");
+  f = f.replace("%T", "HH:mm:ss");
+
+  /* Literal Strings */
+  f = f.replace("%n", "\n");
+  f = f.replace("%t", "\t");
+  f = f.replace("%%", "%");
+
+  return f;
+}
+
 I18n.toNumber = function(number, options) {
   options = this.prepareOptions(
     options,
