@@ -479,6 +479,55 @@ I18n.rbToMomentDateFormat = function(scope, options) {
   return f;
 }
 
+// Converts Ruby date and time format specifiers to D3 format
+// Ruby: http://www.ruby-doc.org/core-1.9.3/Time.html#method-i-strftime
+// D3:   https://github.com/mbostock/d3/wiki/Time-Formatting
+I18n.rbToD3DateFormat = function(scope, options) {
+  var f = this.lookup(scope, options);
+
+  if (f === null) {
+    return "";
+  }
+
+  /*
+    Fortunately a vast majority of the codes are the same between
+    Ruby and D3 so we only need to include the differences here
+  */
+
+  /* Date and Time Formats */
+  f = f.replace(/%[\^]?a/, "%a");
+  f = f.replace(/%[\^]?A/, "%A");
+  f = f.replace(/%[\^]?b/, "%b");
+  f = f.replace(/%[\^]?B/, "%B");
+  f = f.replace("%g", "");   // Not supported
+  f = f.replace("%G", "");   // Not supported
+  f = f.replace("%h", "%b");
+  f = f.replace("%k", "%_H");
+  f = f.replace("%l", "%_I");
+  f = f.replace("%N", "");   // Not supported
+  f = f.replace("%P", "%p");
+  f = f.replace("%u", "");   // Not supported
+  f = f.replace("%w", "d");
+  f = f.replace("%s", "");   // Not supported
+  f = f.replace(/%(:{0,2}z|Z)/, "%Z");
+
+  /* Combinations */
+  f = f.replace("%D", "%m/%d/%y");
+  f = f.replace("%F", "%Y-%m-%d");
+  f = f.replace("%v", "%e-%b-%Y");
+  f = f.replace("%x", "%m/%d/%y");
+  f = f.replace("%X", "%H:%M:%S");
+  f = f.replace("%r", "%I:%M:%S %p");
+  f = f.replace("%R", "%H:%M");
+  f = f.replace("%T", "%H:%M:%S");
+
+  /* Literal Strings */
+  f = f.replace("%n", "\n");
+  f = f.replace("%t", "\t");
+
+  return f;
+}
+
 I18n.toNumber = function(number, options) {
   options = this.prepareOptions(
     options,
