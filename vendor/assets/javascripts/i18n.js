@@ -428,6 +428,9 @@ I18n.rbToMomentDateFormat = function(scope, options) {
     return "";
   }
 
+  /* Need to escape all string literals first with [literal string] */
+  f = f.replace(/(\b[^%\w][A-Za-z0-9 \t\/]+)/g, "[$1]");
+
   /* Date and Time Formats */
   f = f.replace(/%[\^]?a/, "ddd");
   f = f.replace(/%[\^]?A/, "dddd");
