@@ -4,3 +4,4 @@ pkg
 spec/tmp
 .DS_Store
 .idea
+.bundle
